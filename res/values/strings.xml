@@ -23,7 +23,14 @@
     <string name="phone_hint">+79xx xxxxxxx</string>
 
     <string name="email">Эл. почта</string>
-    <string name="email_hint">mail@example.com</string>
+    <string name="email_hint">yourmail@example.com</string>
 
     <string name="send_resume">Отправить резюме</string>
+
+    <!-- Activity2 -->
+    <string name="activity2_title">Резюме соискателя</string>
+    <string name="answer_hint">ответ соискателю</string>
+    <string name="send_answer">Ответить</string>
+
+    <string name="on_send_answer_message">Сообщение соискателю отправлено</string>
 </resources>

@@ -15,37 +15,37 @@
         android:paddingTop="@dimen/activity_vertical_margin" >
 
         <TextView
-            android:id="@+id/textView1"
-            android:layout_width="286dp"
+            android:id="@+id/tv_activity2_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="5.66"
-            android:text="Large Text"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:text="@string/activity2_title"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tv_resume_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Large Text"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:autoLink="phone|email"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/et_answer"
             android:layout_width="match_parent"
-            android:layout_height="141dp"
-            android:layout_weight="11.20"
             android:ems="10"
+            android:isScrollContainer="true"
+            android:layout_height="wrap_content"
+            android:minHeight="150dp"
+            android:hint="@string/answer_hint"
+            android:gravity="top"
             android:inputType="textMultiLine" >
-
-            <requestFocus />
         </EditText>
 
         <Button
-            android:id="@+id/button1"
+            android:id="@+id/btn_send_answer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button" />
-
+            android:text="@string/send_answer" />
     </LinearLayout>
 
 </ScrollView>

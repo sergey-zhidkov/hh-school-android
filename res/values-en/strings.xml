@@ -3,7 +3,7 @@
     <string name="app_name">HH school android</string>
 
     <string name="last_first_name">Last and First Name</string>
-    <string name="last_first_name_hint">John Doe</string>
+    <string name="last_first_name_hint">Smith John</string>
 
     <string name="birthday">Birthday</string>
 
@@ -23,7 +23,15 @@
     <string name="phone_hint">+79xx xxxxxxx</string>
 
     <string name="email">Email</string>
-    <string name="email_hint">mail@example.com</string>
+    <string name="email_hint">yourmail@example.com</string>
 
     <string name="send_resume">Send Resume</string>
+
+    <!-- Activity2 -->
+    <string name="activity2_title">Jobseekers CV</string>
+    <string name="answer_hint">answer...</string>
+    <string name="send_answer">Answer</string>
+
+    <string name="on_send_answer_message">The message was sent</string>
+
 </resources>
