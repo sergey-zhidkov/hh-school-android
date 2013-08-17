@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">HH school android</string>
+
+    <string name="last_first_name">Last and First Name</string>
+    <string name="last_first_name_hint">John Doe</string>
+
+    <string name="birthday">Birthday</string>
+
+    <string name="gender">Sex</string>
+    <string-array name="gender_array">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+    <string name="desired_job_title">Desired Job Title</string>
+    <string name="desired_job_title_hint">Java developer</string>
+
+    <string name="salary">Salary</string>
+    <string name="salary_hint">amount per month, rubles.</string>
+
+    <string name="phone">Phone</string>
+    <string name="phone_hint">+79xx xxxxxxx</string>
+
+    <string name="email">Email</string>
+    <string name="email_hint">mail@example.com</string>
+
+    <string name="send_resume">Send Resume</string>
+</resources>

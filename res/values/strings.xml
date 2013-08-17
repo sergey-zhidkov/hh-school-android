@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">HH school android</string>
+    
+    <string name="last_first_name">ФИО</string>
+    <string name="last_first_name_hint">Иванов Пётр Петрович</string>
+    
+    <string name="birthday">Дата рождения</string>
+    
+    <string name="gender">Пол</string>
+    <string-array name="gender_array">
+        <item>Мужской</item>
+        <item>Женский</item>
+    </string-array>
+    
+    <string name="desired_job_title">Желаемая должность</string>
+    <string name="desired_job_title_hint">Java разработчик</string>
+    
+    <string name="salary">Зарплата</string>
+    <string name="salary_hint">сумма в месяц, руб.</string>
+
+    <string name="phone">Телефон</string>
+    <string name="phone_hint">+79xx xxxxxxx</string>
+
+    <string name="email">Эл. почта</string>
+    <string name="email_hint">mail@example.com</string>
+
+    <string name="send_resume">Отправить резюме</string>
+</resources>
