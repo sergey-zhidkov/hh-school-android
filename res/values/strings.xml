@@ -6,6 +6,7 @@
     <string name="last_first_name_hint">Иванов Пётр Петрович</string>
 
     <string name="birthday">Дата рождения</string>
+    <string name="years">лет</string>
 
     <string name="gender">Пол</string>
     <string-array name="gender_array">
@@ -27,6 +28,7 @@
 
     <string name="send_resume">Отправить резюме</string>
 
+    <string name="fill_name_and_position_message">Перед отправкой резюме необходимо заполнить поля ФИО и Желаемая должность</string>
     <!-- Activity2 -->
     <string name="activity2_title">Резюме соискателя</string>
     <string name="answer_hint">ответ соискателю</string>
@@ -34,5 +36,4 @@
 
     <string name="on_send_answer_message">Сообщение соискателю отправлено</string>
 
-    <string name="fill_name_and_position_message">Перед отправкой резюме необходимо заполнить поля ФИО и Желаемая должность</string>
 </resources>

@@ -1,11 +1,11 @@
 package ru.hh.school.android;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
+import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.format.DateFormat;
 
 public class Resume implements Parcelable{
 
@@ -46,9 +46,9 @@ public class Resume implements Parcelable{
         return birthday;
     }
 
-    public String getFormattedBirthday() {
-        SimpleDateFormat formattedBirthday = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-        return formattedBirthday.format(birthday);
+    public String getFormattedBirthday(Context context) {
+        java.text.DateFormat dateFormat = DateFormat.getDateFormat(context);
+        return dateFormat.format(birthday);
     }
 
     public void setBirthday(Date birthday) {

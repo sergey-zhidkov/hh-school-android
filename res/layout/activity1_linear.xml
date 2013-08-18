@@ -29,6 +29,7 @@
             android:ems="10"
             android:hint="@string/last_first_name_hint"
             android:inputType="textPersonName|textCapWords" >
+
             <requestFocus />
         </EditText>
 
@@ -39,6 +40,13 @@
             android:gravity="center"
             android:text="@string/birthday"
             android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <Button
+            android:id="@+id/btn_change_birthday"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="changeBirthday"
+            android:layout_gravity="center_horizontal" />
 
         <DatePicker
             android:id="@+id/dp_birthday"
@@ -104,9 +112,9 @@
             android:id="@+id/et_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:digits="+0123456789"
             android:ems="10"
             android:hint="@string/phone_hint"
-            android:digits="+0123456789"
             android:inputType="phone" />
 
         <TextView
@@ -131,7 +139,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="@string/send_resume" />
-
     </LinearLayout>
 
 </ScrollView>

@@ -6,6 +6,7 @@
     <string name="last_first_name_hint">Smith John</string>
 
     <string name="birthday">Birthday</string>
+    <string name="years">years</string>
 
     <string name="gender">Sex</string>
     <string-array name="gender_array">
@@ -27,6 +28,7 @@
 
     <string name="send_resume">Send Resume</string>
 
+    <string name="fill_name_and_position_message">You should fill name and desired position before sending resume</string>
     <!-- Activity2 -->
     <string name="activity2_title">Jobseekers CV</string>
     <string name="answer_hint">answer...</string>
@@ -34,5 +36,4 @@
 
     <string name="on_send_answer_message">The message was sent</string>
 
-    <string name="fill_name_and_position_message">You should fill name and desired position before sending resume</string>
 </resources>

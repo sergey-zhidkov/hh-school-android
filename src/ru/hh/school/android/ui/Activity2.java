@@ -56,7 +56,7 @@ public class Activity2 extends Activity implements OnClickListener {
         // set resume content
         StringBuilder sb = new StringBuilder();
         sb.append("<b>").append(lastFirstNameString).append(":").append("</b> ").append(resume.getLastFirstName()).append("<br/>");
-        sb.append("<b>").append(birthdayString).append(":").append("</b> ").append(resume.getFormattedBirthday()).append("<br/>");
+        sb.append("<b>").append(birthdayString).append(":").append("</b> ").append(resume.getFormattedBirthday(this)).append("<br/>");
         sb.append("<b>").append(genderString).append(":").append("</b> ").append(resume.getGender()).append("<br/>");
         sb.append("<b>").append(desiredJobTitleString).append(":").append("</b> ").append(resume.getDesiredJobTitle()).append("<br/>");
         sb.append("<b>").append(salaryString).append(":").append("</b> ").append(resume.getSalary()).append("<br/>");
