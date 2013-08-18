@@ -1,10 +1,12 @@
 package ru.hh.school.android.ui;
 
 import ru.hh.school.R;
+import ru.hh.school.android.ui.fragment.CreateResumeFragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
-import android.widget.Toast;
 
 public class CreateResumeActivity extends FragmentActivity {
 
@@ -15,7 +17,8 @@ public class CreateResumeActivity extends FragmentActivity {
 	}
 
     public void changeBirthday(View view) {
-        // TODO: add datepicker dialog
-        Toast.makeText(this, "Change Birthday button clicked!", Toast.LENGTH_LONG).show();
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        Fragment createResumeFragment = fragmentManager.findFragmentById(R.id.create_resume_fragment);
+        ((CreateResumeFragment) createResumeFragment).changeBirthday(view);
     }
 }

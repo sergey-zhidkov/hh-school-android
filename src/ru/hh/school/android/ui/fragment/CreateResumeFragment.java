@@ -7,7 +7,9 @@ import java.util.Date;
 import ru.hh.school.R;
 import ru.hh.school.android.Resume;
 import ru.hh.school.android.ui.ViewResumeActivity;
+import ru.hh.school.android.ui.dialog.DatePickerFragment;
 import android.app.Activity;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,7 +33,6 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
     private EditText lastFirstName;
     private Button btnChangeBirthday;
     private Date currentBirthday;
-    private DatePicker dpBirthday;
     private Spinner gender;
     private EditText desiredJobTitle;
     private EditText salary;
@@ -53,7 +54,6 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
         return view;
     }
 
-
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -63,7 +63,6 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
     private void initUi() {
         lastFirstName = (EditText) currentView.findViewById(R.id.et_last_first_name);
         btnChangeBirthday = (Button) currentView.findViewById(R.id.btn_change_birthday);
-        dpBirthday = (DatePicker) currentView.findViewById(R.id.dp_birthday);
         gender = (Spinner) currentView.findViewById(R.id.sp_gender);
         desiredJobTitle = (EditText) currentView.findViewById(R.id.et_desired_job_title);
         salary = (EditText) currentView.findViewById(R.id.et_salary);
@@ -78,17 +77,20 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
 
     private void setInitialBirthday() {
         Calendar calendar = Calendar.getInstance();
-
         int year = calendar.get(Calendar.YEAR) - DEFAULT_DELTA_START_YEAR;
         int month = 0; // January
         int day = 1;
 
-        calendar.set(year, month, day);
+        setInitialBirthday(year, month, day);
+    }
 
-        dpBirthday.init(year, month, day, null);
+    private void setInitialBirthday(int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        currentBirthday = calendar.getTime();
 
         java.text.DateFormat dateFormat = DateFormat.getDateFormat(activity);
-        String dateText = dateFormat.format(calendar.getTime());
+        String dateText = dateFormat.format(currentBirthday);
         String years = getResources().getString(R.string.years);
         dateText += " (" + getDiffYears(calendar, Calendar.getInstance()) + " " + years + ")";
 
@@ -109,15 +111,31 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
     }
 
     public void changeBirthday(View view) {
-        // TODO: add datepicker dialog
-        Toast.makeText(activity, "Change Birthday button clicked!", Toast.LENGTH_LONG).show();
+        showDatePickerDialog();
     }
+
+    private void showDatePickerDialog() {
+        DatePickerFragment dpDialog = new DatePickerFragment();
+        Bundle args = new Bundle();
+        args.putLong("birthday", currentBirthday.getTime());
+        dpDialog.setArguments(args);
+        dpDialog.setListener(onChangeBirthdayListener);
+        dpDialog.show(getFragmentManager(), "Birthday picker");
+    }
+
+    private final OnDateSetListener onChangeBirthdayListener = new OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            setInitialBirthday(year, monthOfYear, dayOfMonth);
+        }
+    };
+
 
     @Override
     public void onClick(View v) {
         Resume resume = new Resume();
         resume.setLastFirstName(lastFirstName.getText().toString().trim());
-        resume.setBirthday(getDateFromDatePicker(dpBirthday));
+        resume.setBirthday(currentBirthday);
         resume.setGender(gender.getSelectedItem().toString());
         resume.setDesiredJobTitle(desiredJobTitle.getText().toString().trim());
         resume.setSalary(salary.getText().toString());
@@ -134,14 +152,4 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
         }
     }
 
-    private Date getDateFromDatePicker(DatePicker datePicker) {
-        int year = datePicker.getYear();
-        int month = datePicker.getMonth();
-        int day = datePicker.getDayOfMonth();
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month, day);
-
-        return calendar.getTime();
-    }
 }
