@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">HH school android</string>
-    
+
     <string name="last_first_name">ФИО</string>
     <string name="last_first_name_hint">Иванов Пётр Петрович</string>
-    
+
     <string name="birthday">Дата рождения</string>
-    
+
     <string name="gender">Пол</string>
     <string-array name="gender_array">
         <item>Мужской</item>
         <item>Женский</item>
     </string-array>
-    
+
     <string name="desired_job_title">Желаемая должность</string>
     <string name="desired_job_title_hint">Java разработчик</string>
-    
+
     <string name="salary">Зарплата</string>
     <string name="salary_hint">сумма в месяц, руб.</string>
 
@@ -33,4 +33,6 @@
     <string name="send_answer">Ответить</string>
 
     <string name="on_send_answer_message">Сообщение соискателю отправлено</string>
+
+    <string name="fill_name_and_position_message">Перед отправкой резюме необходимо заполнить поля ФИО и Желаемая должность</string>
 </resources>

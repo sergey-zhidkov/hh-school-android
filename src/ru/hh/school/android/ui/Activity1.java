@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.hh_school_android.R;
 
@@ -65,18 +66,22 @@ public class Activity1 extends Activity implements OnClickListener {
     @Override
     public void onClick(View v) {
         Resume resume = new Resume();
-        resume.setLastFirstName(lastFirstName.getText().toString());
+        resume.setLastFirstName(lastFirstName.getText().toString().trim());
         resume.setBirthday(getDateFromDatePicker(dpBirthday));
         resume.setGender(gender.getSelectedItem().toString());
-        resume.setDesiredJobTitle(desiredJobTitle.getText().toString());
+        resume.setDesiredJobTitle(desiredJobTitle.getText().toString().trim());
         resume.setSalary(salary.getText().toString());
         resume.setPhone(phone.getText().toString());
         resume.setEmail(email.getText().toString());
 
-        // send resume
-        Intent intent = new Intent(this, Activity2.class);
-        intent.putExtra(Resume.class.getCanonicalName(), resume);
-        startActivity(intent);
+        if (resume.isFilledCorrectly()) {
+            // send resume
+            Intent intent = new Intent(this, Activity2.class);
+            intent.putExtra(Resume.class.getCanonicalName(), resume);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, R.string.fill_name_and_position_message, Toast.LENGTH_LONG).show();
+        }
     }
 
     private Date getDateFromDatePicker(DatePicker datePicker) {

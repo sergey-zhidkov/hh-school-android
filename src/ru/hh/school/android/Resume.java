@@ -21,6 +21,19 @@ public class Resume implements Parcelable{
 
     }
 
+    public boolean isFilledCorrectly() {
+        boolean filledCorrectly = true;
+        if (lastFirstName == null || lastFirstName.length() == 0) {
+            filledCorrectly = false;
+        }
+
+        if (desiredJobTitle == null || desiredJobTitle.length() == 0) {
+            filledCorrectly = false;
+        }
+
+        return filledCorrectly;
+    }
+
     public String getLastFirstName() {
         return lastFirstName;
     }
@@ -127,5 +140,4 @@ public class Resume implements Parcelable{
         phone = parcel.readString();
         email = parcel.readString();
     }
-
 }

@@ -34,4 +34,5 @@
 
     <string name="on_send_answer_message">The message was sent</string>
 
+    <string name="fill_name_and_position_message">You should fill name and desired position before sending resume</string>
 </resources>
