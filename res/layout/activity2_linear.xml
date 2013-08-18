@@ -18,27 +18,39 @@
             android:id="@+id/tv_activity2_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/activity2_title"
             android:gravity="center"
+            android:text="@string/activity2_title"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <TextView
             android:id="@+id/tv_resume_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autoLink="phone|email"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:id="@+id/tv_resume_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="phone"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+        <TextView
+            android:id="@+id/tv_resume_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="email"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <EditText
             android:id="@+id/et_answer"
             android:layout_width="match_parent"
-            android:ems="10"
-            android:isScrollContainer="true"
             android:layout_height="wrap_content"
-            android:minHeight="150dp"
-            android:hint="@string/answer_hint"
+            android:ems="10"
             android:gravity="top"
-            android:inputType="textMultiLine" >
+            android:hint="@string/answer_hint"
+            android:inputType="textMultiLine"
+            android:isScrollContainer="true"
+            android:minHeight="150dp" >
         </EditText>
 
         <Button

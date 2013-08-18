@@ -17,6 +17,8 @@ import com.example.hh_school_android.R;
 public class Activity2 extends Activity implements OnClickListener {
 
     private TextView resumeContent;
+    private TextView resumePhone;
+    private TextView resumeEmail;
     private EditText answer;
     private Button btnSendAnswer;
 
@@ -30,6 +32,8 @@ public class Activity2 extends Activity implements OnClickListener {
 
     private void init() {
         resumeContent = (TextView) findViewById(R.id.tv_resume_content);
+        resumePhone = (TextView) findViewById(R.id.tv_resume_phone);
+        resumeEmail = (TextView) findViewById(R.id.tv_resume_email);
         answer = (EditText) findViewById(R.id.et_answer);
         btnSendAnswer = (Button) findViewById(R.id.btn_send_answer);
         btnSendAnswer.setOnClickListener(this);
@@ -49,16 +53,24 @@ public class Activity2 extends Activity implements OnClickListener {
         String phoneString = res.getString(R.string.phone);
         String emailString = res.getString(R.string.email);
 
+        // set resume content
         StringBuilder sb = new StringBuilder();
         sb.append("<b>").append(lastFirstNameString).append(":").append("</b> ").append(resume.getLastFirstName()).append("<br/>");
         sb.append("<b>").append(birthdayString).append(":").append("</b> ").append(resume.getFormattedBirthday()).append("<br/>");
         sb.append("<b>").append(genderString).append(":").append("</b> ").append(resume.getGender()).append("<br/>");
         sb.append("<b>").append(desiredJobTitleString).append(":").append("</b> ").append(resume.getDesiredJobTitle()).append("<br/>");
         sb.append("<b>").append(salaryString).append(":").append("</b> ").append(resume.getSalary()).append("<br/>");
-        sb.append("<b>").append(phoneString).append(":").append("</b> ").append(resume.getPhone()).append("<br/>");
-        sb.append("<b>").append(emailString).append(":").append("</b> ").append(resume.getEmail()).append("<br/>");
-
         resumeContent.setText(Html.fromHtml(sb.toString()));
+
+        // set resume phone
+        sb = new StringBuilder();
+        sb.append("<b>").append(phoneString).append(":").append("</b> ").append(resume.getPhone()).append("<br/>");
+        resumePhone.setText(Html.fromHtml(sb.toString()));
+
+        // set resume email
+        sb = new StringBuilder();
+        sb.append("<b>").append(emailString).append(":").append("</b> ").append(resume.getEmail()).append("<br/>");
+        resumeEmail.setText(Html.fromHtml(sb.toString()));
     }
 
     @Override
