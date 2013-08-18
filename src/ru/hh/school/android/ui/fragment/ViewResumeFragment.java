@@ -1,20 +1,25 @@
-package ru.hh.school.android.ui;
+package ru.hh.school.android.ui.fragment;
 
+import ru.hh.school.R;
 import ru.hh.school.android.Resume;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.hh_school_android.R;
+public class ViewResumeFragment extends Fragment implements OnClickListener {
 
-public class Activity2 extends Activity implements OnClickListener {
+    private Activity activity;
+    private View currentView;
 
     private TextView resumeContent;
     private TextView resumePhone;
@@ -22,27 +27,38 @@ public class Activity2 extends Activity implements OnClickListener {
     private EditText answer;
     private Button btnSendAnswer;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity2_linear);
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.activity = activity;
+    }
 
-		init();
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.view_resume_fragment, container, false);
+        this.currentView = view;
+        return view;
+    }
 
-    private void init() {
-        resumeContent = (TextView) findViewById(R.id.tv_resume_content);
-        resumePhone = (TextView) findViewById(R.id.tv_resume_phone);
-        resumeEmail = (TextView) findViewById(R.id.tv_resume_email);
-        answer = (EditText) findViewById(R.id.et_answer);
-        btnSendAnswer = (Button) findViewById(R.id.btn_send_answer);
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        initUi();
+    }
+
+    private void initUi() {
+        resumeContent = (TextView) currentView.findViewById(R.id.tv_resume_content);
+        resumePhone = (TextView) currentView.findViewById(R.id.tv_resume_phone);
+        resumeEmail = (TextView) currentView.findViewById(R.id.tv_resume_email);
+        answer = (EditText) currentView.findViewById(R.id.et_answer);
+        btnSendAnswer = (Button) currentView.findViewById(R.id.btn_send_answer);
         btnSendAnswer.setOnClickListener(this);
 
         setResumeContent();
     }
 
     private void setResumeContent() {
-        Resume resume = (Resume) getIntent().getParcelableExtra(Resume.class.getCanonicalName());
+        Resume resume = (Resume) activity.getIntent().getParcelableExtra(Resume.class.getCanonicalName());
 
         Resources res = getResources();
         String lastFirstNameString = res.getString(R.string.last_first_name);
@@ -56,7 +72,7 @@ public class Activity2 extends Activity implements OnClickListener {
         // set resume content
         StringBuilder sb = new StringBuilder();
         sb.append("<b>").append(lastFirstNameString).append(":").append("</b> ").append(resume.getLastFirstName()).append("<br/>");
-        sb.append("<b>").append(birthdayString).append(":").append("</b> ").append(resume.getFormattedBirthday(this)).append("<br/>");
+        sb.append("<b>").append(birthdayString).append(":").append("</b> ").append(resume.getFormattedBirthday(activity)).append("<br/>");
         sb.append("<b>").append(genderString).append(":").append("</b> ").append(resume.getGender()).append("<br/>");
         sb.append("<b>").append(desiredJobTitleString).append(":").append("</b> ").append(resume.getDesiredJobTitle()).append("<br/>");
         sb.append("<b>").append(salaryString).append(":").append("</b> ").append(resume.getSalary()).append("<br/>");
@@ -78,7 +94,6 @@ public class Activity2 extends Activity implements OnClickListener {
         String message = answer.getText().toString();
         message = message.trim();
         // TODO: send message to...
-        Toast.makeText(this, R.string.on_send_answer_message, Toast.LENGTH_LONG).show();
+        Toast.makeText(activity, R.string.on_send_answer_message, Toast.LENGTH_LONG).show();
     }
-
 }
