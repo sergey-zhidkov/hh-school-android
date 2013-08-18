@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- CreateResumeActivity -->
     <string name="app_name">HH school android</string>
 
     <string name="last_first_name">Last and First Name</string>
@@ -27,13 +28,21 @@
     <string name="email_hint">yourmail@example.com</string>
 
     <string name="send_resume">Send Resume</string>
+    <string name="save_resume">Save Resume</string>
 
     <string name="fill_name_and_position_message">You should fill name and desired position before sending resume</string>
-    <!-- Activity2 -->
+
+    <!-- ViewResumeActivity -->
     <string name="activity2_title">Jobseekers CV</string>
     <string name="answer_hint">answer...</string>
     <string name="send_answer">Answer</string>
 
     <string name="on_send_answer_message">The message was sent</string>
 
+    <!-- ResumesManagerActivity -->
+    <string name="resumes_list_is_empty">--No resumes--</string>
+    <string name="resumes_list">List of resumes</string>
+    <string name="create_resume">Create Resume</string>
+    <string name="edit_resume">Edit Resume</string>
+    <string name="remove_resume">Remove Resume</string>
 </resources>

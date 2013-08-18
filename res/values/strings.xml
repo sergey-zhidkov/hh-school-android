@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- CreateResumeActivity -->
     <string name="app_name">HH school android</string>
 
     <string name="last_first_name">ФИО</string>
@@ -27,13 +28,21 @@
     <string name="email_hint">yourmail@example.com</string>
 
     <string name="send_resume">Отправить резюме</string>
+    <string name="save_resume">Сохранить резюме</string>
 
     <string name="fill_name_and_position_message">Перед отправкой резюме необходимо заполнить поля ФИО и Желаемая должность</string>
-    <!-- Activity2 -->
+
+    <!-- ViewResumeActivity -->
     <string name="activity2_title">Резюме соискателя</string>
     <string name="answer_hint">ответ соискателю</string>
     <string name="send_answer">Ответить</string>
 
     <string name="on_send_answer_message">Сообщение соискателю отправлено</string>
 
+    <!-- ResumesManagerActivity -->
+    <string name="resumes_list_is_empty">--Резюме отсутствуют--</string>
+    <string name="resumes_list">Список резюме</string>
+    <string name="create_resume">Создать резюме</string>
+    <string name="edit_resume">Редактировать резюме</string>
+    <string name="remove_resume">Удалить резюме</string>
 </resources>

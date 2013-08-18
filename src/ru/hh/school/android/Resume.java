@@ -9,6 +9,7 @@ import android.text.format.DateFormat;
 
 public class Resume implements Parcelable{
 
+    private int id;
     private String lastFirstName;
     private Date birthday;
     private String gender;
@@ -32,6 +33,14 @@ public class Resume implements Parcelable{
         }
 
         return filledCorrectly;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getLastFirstName() {

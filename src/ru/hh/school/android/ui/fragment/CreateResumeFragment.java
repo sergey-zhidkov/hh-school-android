@@ -27,8 +27,15 @@ import android.widget.Toast;
 public class CreateResumeFragment extends Fragment implements OnClickListener {
     private static final int DEFAULT_DELTA_START_YEAR = 18;
 
+    private static final String GENDER_MALE = "male";
+    private static final String GENDER_FEMALE = "female";
+    private static final int GENDER_MALE_POSITION = 0;
+    private static final int GENDER_FEMALE_POSITION = 0;
+
     private Activity activity;
     private View currentView;
+
+    private Resume resume;
 
     private EditText lastFirstName;
     private Button btnChangeBirthday;
@@ -40,6 +47,7 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
     private EditText email;
 
     private Button btnSendResume;
+    private Button btnSaveResume;
 
     @Override
     public void onAttach(Activity activity) {
@@ -58,6 +66,7 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initUi();
+        fillForm();
     }
 
     private void initUi() {
@@ -72,19 +81,67 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
         btnSendResume = (Button) currentView.findViewById(R.id.btn_send_resume);
         btnSendResume.setOnClickListener(this);
 
-        setInitialBirthday();
+        btnSaveResume = (Button) currentView.findViewById(R.id.btn_save_resume);
+        btnSendResume.setOnClickListener(this);
     }
 
-    private void setInitialBirthday() {
+    private void fillForm() {
+        resume = (Resume) activity.getIntent().getParcelableExtra(Resume.class.getCanonicalName());
+        if (resume == null) {
+            resume = new Resume();
+        }
+
+        lastFirstName.setText(resume.getLastFirstName());
+        setBirthday(resume.getBirthday());
+        setGender(resume.getGender());
+        desiredJobTitle.setText(resume.getDesiredJobTitle());
+        salary.setText(resume.getSalary());
+        phone.setText(resume.getPhone());
+        email.setText(resume.getEmail());
+    }
+
+    private void setGender(String genderString) {
+        if (GENDER_MALE.equalsIgnoreCase(genderString)) {
+            gender.setSelection(GENDER_MALE_POSITION);
+        } else {
+            gender.setSelection(GENDER_FEMALE_POSITION);
+        }
+    }
+
+    private String getGender() {
+        int genderIndex = gender.getSelectedItemPosition();
+        if (genderIndex == 0) {
+            return GENDER_MALE;
+        } else {
+            return GENDER_FEMALE;
+        }
+    }
+
+    private void setBirthday() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR) - DEFAULT_DELTA_START_YEAR;
         int month = 0; // January
         int day = 1;
 
-        setInitialBirthday(year, month, day);
+        setBirthday(year, month, day);
     }
 
-    private void setInitialBirthday(int year, int month, int day) {
+    private void setBirthday(Date date) {
+        if (date == null) {
+            setBirthday();
+            return;
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        setBirthday(year, month, day);
+    }
+
+    private void setBirthday(int year, int month, int day) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day);
         currentBirthday = calendar.getTime();
@@ -126,22 +183,36 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
     private final OnDateSetListener onChangeBirthdayListener = new OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            setInitialBirthday(year, monthOfYear, dayOfMonth);
+            setBirthday(year, monthOfYear, dayOfMonth);
         }
     };
 
-
     @Override
     public void onClick(View v) {
-        Resume resume = new Resume();
         resume.setLastFirstName(lastFirstName.getText().toString().trim());
         resume.setBirthday(currentBirthday);
-        resume.setGender(gender.getSelectedItem().toString());
+        resume.setGender(getGender());
         resume.setDesiredJobTitle(desiredJobTitle.getText().toString().trim());
         resume.setSalary(salary.getText().toString());
         resume.setPhone(phone.getText().toString());
         resume.setEmail(email.getText().toString());
 
+        switch (v.getId()) {
+        case R.id.btn_send_resume:
+            saveResume();
+            sendResume();
+            break;
+        case R.id.btn_save_resume:
+            saveResume();
+            break;
+        }
+    }
+
+    private void saveResume() {
+
+    }
+
+    private void sendResume() {
         if (resume.isFilledCorrectly()) {
             // send resume
             Intent intent = new Intent(activity, ViewResumeActivity.class);
@@ -151,5 +222,4 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
             Toast.makeText(activity, R.string.fill_name_and_position_message, Toast.LENGTH_LONG).show();
         }
     }
-
 }
