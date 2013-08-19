@@ -9,11 +9,13 @@ import ru.hh.school.android.DBHelper;
 import ru.hh.school.android.Resume;
 import ru.hh.school.android.ui.CreateResumeActivity;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,6 +25,8 @@ import android.widget.Button;
 import android.widget.Spinner;
 
 public class ResumesManagerFragment extends Fragment implements OnClickListener {
+    private static final String TAG = "HH_SCHOOL";
+
     private Activity activity;
     private View currentView;
 
@@ -54,9 +58,18 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
         super.onActivityCreated(savedInstanceState);
 
         dbHelper = new DBHelper(activity);
-        resumes = getResumesList();
         initSpinner();
         initButtons();
+    }
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume()");
+        updateSpinner();
+        updateButtons();
     }
 
     private void initSpinner() {
@@ -65,6 +78,7 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
     }
 
     private void updateSpinner() {
+        resumes = getResumesList();
         int resumesSize = resumes.size();
 
         List<String> spinnerList = new ArrayList<String>();
@@ -85,6 +99,8 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
 
         if (resumesSize == 0) {
             spResumesList.setEnabled(false);
+        } else {
+            spResumesList.setEnabled(true);
         }
     }
 
@@ -99,34 +115,78 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
             do {
                 resume = new Resume();
 
-                colIndex = cursor.getColumnIndex("id");
+                colIndex = cursor.getColumnIndex(DBHelper.COL_ROWID);
                 resume.setId(cursor.getInt(colIndex));
 
-                colIndex = cursor.getColumnIndex("name");
+                colIndex = cursor.getColumnIndex(DBHelper.COL_NAME);
                 resume.setLastFirstName(cursor.getString(colIndex));
 
-                colIndex = cursor.getColumnIndex("birthday");
+                colIndex = cursor.getColumnIndex(DBHelper.COL_BIRTHDAY);
                 String birthdayString = cursor.getString(colIndex);
                 resume.setBirthday(new Date()); //TODO:
 
-                colIndex = cursor.getColumnIndex("gender");
+                colIndex = cursor.getColumnIndex(DBHelper.COL_GENDER);
                 resume.setGender(cursor.getString(colIndex));
 
-                colIndex = cursor.getColumnIndex("position");
+                colIndex = cursor.getColumnIndex(DBHelper.COL_POSITION);
                 resume.setDesiredJobTitle(cursor.getString(colIndex));
 
-                colIndex = cursor.getColumnIndex("salary");
+                colIndex = cursor.getColumnIndex(DBHelper.COL_SALARY);
                 resume.setSalary(cursor.getString(colIndex));
 
-                colIndex = cursor.getColumnIndex("phone");
+                colIndex = cursor.getColumnIndex(DBHelper.COL_PHONE);
                 resume.setPhone(cursor.getString(colIndex));
 
-                colIndex = cursor.getColumnIndex("email");
+                colIndex = cursor.getColumnIndex(DBHelper.COL_EMAIL);
                 resume.setEmail(cursor.getString(colIndex));
+
+                resumes.add(resume);
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
         return resumes;
+    }
+
+    private Resume getResumeByRowId(long rowId) {
+        Resume resume = new Resume();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String select = "select * from " + DBHelper.TABLE_RESUME + " where rowid = ?";
+        Cursor cursor = db.rawQuery(select, new String[] {Long.toString(rowId)});
+
+        Log.d(TAG, "cursor.moveToFirst() = " + cursor.moveToFirst());
+        Log.d(TAG, resume.toString());
+        int colIndex;
+        if (cursor.moveToFirst()) {
+            resume.setId((int) rowId);
+
+            colIndex = cursor.getColumnIndex(DBHelper.COL_NAME);
+            resume.setLastFirstName(cursor.getString(colIndex));
+
+            colIndex = cursor.getColumnIndex(DBHelper.COL_BIRTHDAY);
+            String birthdayString = cursor.getString(colIndex);
+            resume.setBirthday(new Date()); //TODO:
+
+            colIndex = cursor.getColumnIndex(DBHelper.COL_GENDER);
+            resume.setGender(cursor.getString(colIndex));
+
+            colIndex = cursor.getColumnIndex(DBHelper.COL_POSITION);
+            resume.setDesiredJobTitle(cursor.getString(colIndex));
+
+            colIndex = cursor.getColumnIndex(DBHelper.COL_SALARY);
+            resume.setSalary(cursor.getString(colIndex));
+
+            colIndex = cursor.getColumnIndex(DBHelper.COL_PHONE);
+            resume.setPhone(cursor.getString(colIndex));
+
+            colIndex = cursor.getColumnIndex(DBHelper.COL_EMAIL);
+            resume.setEmail(cursor.getString(colIndex));
+        }
+
+        Log.d(TAG, resume.toString());
+
+        cursor.close();
+        return resume;
     }
 
     private void initButtons() {
@@ -177,7 +237,23 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
     }
 
     private void createResume() {
+        ContentValues cv = new ContentValues();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        cv.put(DBHelper.COL_NAME, "");
+        cv.put(DBHelper.COL_BIRTHDAY, "");
+        cv.put(DBHelper.COL_GENDER, "male");
+        cv.put(DBHelper.COL_POSITION, "");
+        cv.put(DBHelper.COL_SALARY, "");
+        cv.put(DBHelper.COL_PHONE, "");
+        cv.put(DBHelper.COL_EMAIL, "");
+
+        // TODO: check for error -1
+        long rowId = db.insert(DBHelper.TABLE_RESUME, null, cv);
+        Resume resume = getResumeByRowId(rowId);
+
         Intent intent = new Intent(activity, CreateResumeActivity.class);
+        intent.putExtra(Resume.class.getCanonicalName(), resume);
         startActivity(intent);
     }
 

@@ -104,11 +104,12 @@ public class Resume implements Parcelable{
         this.email = email;
     }
 
+
     @Override
     public String toString() {
-        return "Resume [lastFirstName=" + lastFirstName + ", birthday=" + birthday + ", gender=" + gender
-                + ", desiredJobTitle=" + desiredJobTitle + ", salary=" + salary + ", phone=" + phone + ", email="
-                + email + "]";
+        return "Resume [id=" + id + ", lastFirstName=" + lastFirstName + ", birthday=" + birthday + ", gender="
+                + gender + ", desiredJobTitle=" + desiredJobTitle + ", salary=" + salary + ", phone=" + phone
+                + ", email=" + email + "]";
     }
 
     //******* Parcelable part ******
