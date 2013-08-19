@@ -120,6 +120,7 @@ public class Resume implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(lastFirstName);
         dest.writeLong(birthday.getTime());
         dest.writeString(gender);
@@ -142,6 +143,7 @@ public class Resume implements Parcelable{
     };
 
     private Resume(Parcel parcel) {
+        id = parcel.readInt();
         lastFirstName = parcel.readString();
         birthday = new Date(parcel.readLong());
         gender = parcel.readString();

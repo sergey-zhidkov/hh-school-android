@@ -5,15 +5,19 @@ import java.util.Calendar;
 import java.util.Date;
 
 import ru.hh.school.R;
+import ru.hh.school.android.DBHelper;
 import ru.hh.school.android.Resume;
 import ru.hh.school.android.ui.ViewResumeActivity;
 import ru.hh.school.android.ui.dialog.DatePickerFragment;
 import android.app.Activity;
 import android.app.DatePickerDialog.OnDateSetListener;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +35,8 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
     private static final String GENDER_FEMALE = "female";
     private static final int GENDER_MALE_POSITION = 0;
     private static final int GENDER_FEMALE_POSITION = 0;
+
+    private static final String TAG = "HH_SCHOOL";
 
     private Activity activity;
     private View currentView;
@@ -82,14 +88,11 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
         btnSendResume.setOnClickListener(this);
 
         btnSaveResume = (Button) currentView.findViewById(R.id.btn_save_resume);
-        btnSendResume.setOnClickListener(this);
+        btnSaveResume.setOnClickListener(this);
     }
 
     private void fillForm() {
         resume = (Resume) activity.getIntent().getParcelableExtra(Resume.class.getCanonicalName());
-        if (resume == null) {
-            resume = new Resume();
-        }
 
         lastFirstName.setText(resume.getLastFirstName());
         setBirthday(resume.getBirthday());
@@ -209,7 +212,22 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
     }
 
     private void saveResume() {
+        Log.d(TAG, resume.toString());
+        int rowId = resume.getId();
+        DBHelper dbHelper = new DBHelper(activity);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
+        ContentValues cv = new ContentValues();
+        cv.put(DBHelper.COL_NAME, resume.getLastFirstName());
+        cv.put(DBHelper.COL_BIRTHDAY, 0); // TODO: ??
+        cv.put(DBHelper.COL_GENDER, resume.getGender());
+        cv.put(DBHelper.COL_POSITION, resume.getDesiredJobTitle());
+        cv.put(DBHelper.COL_SALARY, resume.getSalary());
+        cv.put(DBHelper.COL_PHONE, resume.getPhone());
+        cv.put(DBHelper.COL_EMAIL, resume.getEmail());
+
+        db.update(DBHelper.TABLE_RESUME, cv, "rowid=" + rowId, null);
+        db.close();
     }
 
     private void sendResume() {

@@ -8,6 +8,7 @@ import ru.hh.school.R;
 import ru.hh.school.android.DBHelper;
 import ru.hh.school.android.Resume;
 import ru.hh.school.android.ui.CreateResumeActivity;
+import ru.hh.school.android.ui.ViewResumeActivity;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class ResumesManagerFragment extends Fragment implements OnClickListener {
     private static final String TAG = "HH_SCHOOL";
@@ -83,8 +85,14 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
 
         List<String> spinnerList = new ArrayList<String>();
         String spinnerListItem;
+        int nPosition = 0;
+        String jobTitle;
+        String name;
         for (Resume resume : resumes) {
-            spinnerListItem = resume.getId() + ". " + resume.getDesiredJobTitle();
+            nPosition++;
+            name = resume.getLastFirstName();
+            jobTitle = resume.getDesiredJobTitle();
+            spinnerListItem = nPosition + ". " + ("".equals(jobTitle) ? name : jobTitle);
             spinnerList.add(spinnerListItem);
         }
 
@@ -154,8 +162,6 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
         String select = "select * from " + DBHelper.TABLE_RESUME + " where rowid = ?";
         Cursor cursor = db.rawQuery(select, new String[] {Long.toString(rowId)});
 
-        Log.d(TAG, "cursor.moveToFirst() = " + cursor.moveToFirst());
-        Log.d(TAG, resume.toString());
         int colIndex;
         if (cursor.moveToFirst()) {
             resume.setId((int) rowId);
@@ -182,8 +188,6 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
             colIndex = cursor.getColumnIndex(DBHelper.COL_EMAIL);
             resume.setEmail(cursor.getString(colIndex));
         }
-
-        Log.d(TAG, resume.toString());
 
         cursor.close();
         return resume;
@@ -241,7 +245,7 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         cv.put(DBHelper.COL_NAME, "");
-        cv.put(DBHelper.COL_BIRTHDAY, "");
+        cv.put(DBHelper.COL_BIRTHDAY, ""); // TODO: ??
         cv.put(DBHelper.COL_GENDER, "male");
         cv.put(DBHelper.COL_POSITION, "");
         cv.put(DBHelper.COL_SALARY, "");
@@ -250,6 +254,8 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
 
         // TODO: check for error -1
         long rowId = db.insert(DBHelper.TABLE_RESUME, null, cv);
+        db.close();
+
         Resume resume = getResumeByRowId(rowId);
 
         Intent intent = new Intent(activity, CreateResumeActivity.class);
@@ -258,17 +264,37 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
     }
 
     private void editResume() {
-        // TODO Auto-generated method stub
+        int editPosition = spResumesList.getSelectedItemPosition();
+        Resume resumeToEdit = resumes.get(editPosition);
 
+        Intent intent = new Intent(activity, CreateResumeActivity.class);
+        intent.putExtra(Resume.class.getCanonicalName(), resumeToEdit);
+        startActivity(intent);
     }
 
     private void removeResume() {
-        // TODO Auto-generated method stub
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int deletedPosition = spResumesList.getSelectedItemPosition();
+        int rowId = resumes.get(deletedPosition).getId();
 
+        db.delete(DBHelper.TABLE_RESUME, "rowid=" + rowId, null);
+        db.close();
+
+        updateSpinner();
+        updateButtons();
     }
 
     private void sendResume() {
-        // TODO Auto-generated method stub
+        int positionToSend = spResumesList.getSelectedItemPosition();
+        Resume resumeToSend = resumes.get(positionToSend);
 
+        if (resumeToSend.isFilledCorrectly()) {
+            // send resume
+            Intent intent = new Intent(activity, ViewResumeActivity.class);
+            intent.putExtra(Resume.class.getCanonicalName(), resumeToSend);
+            startActivity(intent);
+        } else {
+            Toast.makeText(activity, R.string.fill_name_and_position_message, Toast.LENGTH_LONG).show();
+        }
     }
 }
