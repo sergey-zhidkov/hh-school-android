@@ -172,7 +172,8 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
      */
     private void createResume() {
         Resume resume = new Resume();
-        dbHelper.insertResumeIntoDB(resume);
+        long rowId = dbHelper.insertResumeIntoDB(resume);
+        resume.setId(rowId);
 
         Intent intent = new Intent(activity, CreateResumeActivity.class);
         intent.putExtra(Resume.class.getCanonicalName(), resume);
@@ -196,7 +197,7 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
      */
     private void removeResume() {
         int deletedPosition = spResumesList.getSelectedItemPosition();
-        int rowId = resumes.get(deletedPosition).getId();
+        long rowId = resumes.get(deletedPosition).getId();
         dbHelper.removeResumeByRowId(rowId);
 
         updateSpinner();

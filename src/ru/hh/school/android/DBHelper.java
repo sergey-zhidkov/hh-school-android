@@ -98,50 +98,6 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Returns resume from DB by rowId.
-     *
-     * @param rowId
-     * @return resume object
-     */
-    public Resume getResumeByRowId(long rowId) {
-        Resume resume = new Resume();
-        SQLiteDatabase db = this.getReadableDatabase();
-        String select = "select * from " + DBHelper.TABLE_RESUME + " where rowid = ?";
-        Cursor cursor = db.rawQuery(select, new String[] {Long.toString(rowId)});
-
-        int colIndex;
-        if (cursor.moveToFirst()) {
-            resume.setId((int) rowId);
-
-            colIndex = cursor.getColumnIndex(DBHelper.COL_NAME);
-            resume.setLastFirstName(cursor.getString(colIndex));
-
-            colIndex = cursor.getColumnIndex(DBHelper.COL_BIRTHDAY);
-            long birthday = cursor.getLong(colIndex);
-            resume.setBirthday(new Date(birthday));
-
-            colIndex = cursor.getColumnIndex(DBHelper.COL_GENDER);
-            resume.setGender(cursor.getString(colIndex));
-
-            colIndex = cursor.getColumnIndex(DBHelper.COL_POSITION);
-            resume.setDesiredJobTitle(cursor.getString(colIndex));
-
-            colIndex = cursor.getColumnIndex(DBHelper.COL_SALARY);
-            resume.setSalary(cursor.getString(colIndex));
-
-            colIndex = cursor.getColumnIndex(DBHelper.COL_PHONE);
-            resume.setPhone(cursor.getString(colIndex));
-
-            colIndex = cursor.getColumnIndex(DBHelper.COL_EMAIL);
-            resume.setEmail(cursor.getString(colIndex));
-        }
-
-        db.close();
-        cursor.close();
-        return resume;
-    }
-
-    /**
      * Inserts resume into DB and returns newly created rowId.
      *
      * @param resume

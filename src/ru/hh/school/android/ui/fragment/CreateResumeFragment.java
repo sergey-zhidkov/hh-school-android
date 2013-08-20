@@ -208,7 +208,7 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
      * Saves resume into DB, but don't send it to HR.
      */
     private void saveResume() {
-        int rowId = resume.getId();
+        long rowId = resume.getId();
         new DBHelper(activity).updateResumeByRowId(rowId, resume);
     }
 

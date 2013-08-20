@@ -8,13 +8,16 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.format.DateFormat;
 
+/**
+ * Class handle work with resume object.
+ */
 public class Resume implements Parcelable{
     public static final String GENDER_MALE = "male";
     public static final String GENDER_FEMALE = "female";
 
     public static final int DEFAULT_DELTA_START_YEAR = 18;
 
-    private int id;
+    private long id;
     private String lastFirstName;
     private Date birthday;
     private String gender;
@@ -24,10 +27,20 @@ public class Resume implements Parcelable{
     private String email;
 
     public Resume() {
-        gender = GENDER_MALE;
+        lastFirstName = "";
         birthday = new Date(getInitialDate());
+        gender = GENDER_MALE;
+        desiredJobTitle = "";
+        salary = "";
+        phone = "";
+        email = "";
     }
 
+    /**
+     * Checks, than resume filled correctly.
+     *
+     * @return true if name and desired job is not empty
+     */
     public boolean isFilledCorrectly() {
         boolean filledCorrectly = true;
         if (lastFirstName == null || lastFirstName.length() == 0) {
@@ -41,11 +54,11 @@ public class Resume implements Parcelable{
         return filledCorrectly;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -61,11 +74,24 @@ public class Resume implements Parcelable{
         return birthday;
     }
 
+    /**
+     * Returns formatted birthday string in current locale.
+     *
+     * @param context
+     * @return
+     */
     public String getFormattedBirthday(Context context) {
         java.text.DateFormat dateFormat = DateFormat.getDateFormat(context);
         return dateFormat.format(birthday);
     }
 
+    /**
+     * Returns diff between two dates in years.
+     *
+     * @param first calendar date
+     * @param last calendar date
+     * @return distance in years between two dates
+     */
     private int getDiffYears(Calendar first, Calendar last) {
         int diff = last.get(Calendar.YEAR) - first.get(Calendar.YEAR);
         if (first.get(Calendar.MONTH) > last.get(Calendar.MONTH)) {
@@ -78,12 +104,22 @@ public class Resume implements Parcelable{
         return diff;
     }
 
+    /**
+     * Returns age in years.
+     *
+     * @return age in years
+     */
     public int getAgeYears() {
         Calendar first = Calendar.getInstance();
         first.setTime(birthday);
         return getDiffYears(first, Calendar.getInstance());
     }
 
+    /**
+     * Returns initial date to 1 January (CurrentYear - DEF_DELTA_START_YEAR)
+     *
+     * @return date milliseconds
+     */
     private long getInitialDate() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR) - DEFAULT_DELTA_START_YEAR;
@@ -151,7 +187,7 @@ public class Resume implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
+        dest.writeLong(id);
         dest.writeString(lastFirstName);
         dest.writeLong(birthday.getTime());
         dest.writeString(gender);
@@ -174,7 +210,7 @@ public class Resume implements Parcelable{
     };
 
     private Resume(Parcel parcel) {
-        id = parcel.readInt();
+        id = parcel.readLong();
         lastFirstName = parcel.readString();
         birthday = new Date(parcel.readLong());
         gender = parcel.readString();
