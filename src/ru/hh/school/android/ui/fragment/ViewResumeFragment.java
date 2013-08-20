@@ -57,6 +57,9 @@ public class ViewResumeFragment extends Fragment implements OnClickListener {
         setResumeContent();
     }
 
+    /**
+     * Fill view with formatted jobseekers cv.
+     */
     private void setResumeContent() {
         Resume resume = (Resume) activity.getIntent().getParcelableExtra(Resume.class.getCanonicalName());
 
