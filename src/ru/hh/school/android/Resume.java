@@ -9,6 +9,8 @@ import android.os.Parcelable;
 import android.text.format.DateFormat;
 
 public class Resume implements Parcelable{
+    public static final String GENDER_MALE = "male";
+    public static final String GENDER_FEMALE = "female";
 
     private int id;
     private String lastFirstName;
@@ -20,7 +22,7 @@ public class Resume implements Parcelable{
     private String email;
 
     public Resume() {
-
+        gender = GENDER_MALE;
     }
 
     public boolean isFilledCorrectly() {

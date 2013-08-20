@@ -65,26 +65,33 @@ public class ViewResumeFragment extends Fragment implements OnClickListener {
         String birthdayString = res.getString(R.string.birthday);
         String years = res.getString(R.string.years);
         String genderString = res.getString(R.string.gender);
+        String gender;
+        if (Resume.GENDER_MALE.equals(resume.getGender())) {
+            gender = res.getString(R.string.gender_male);
+        } else {
+            gender = res.getString(R.string.gender_female);
+        }
         String desiredJobTitleString = res.getString(R.string.desired_job_title);
         String salaryString = res.getString(R.string.salary);
         String phoneString = res.getString(R.string.phone);
         String emailString = res.getString(R.string.email);
 
-        // set resume content
+        // set formatted resume content
         String temp = "";
         temp += "<b>" + lastFirstNameString + ":</b> " + resume.getLastFirstName() + "<br/>";
+        // TODO: fix russian (18 years) (23 years)
         temp += "<b>" + birthdayString + ":</b> " + resume.getFormattedBirthday(activity) + " (" + resume.getAgeYears() + " " + years + ")" + "<br/>";
-        temp += "<b>" + genderString + ":</b> " + resume.getGender() + "<br/>";
+        temp += "<b>" + genderString + ":</b> " + gender + "<br/>";
         temp += "<b>" + desiredJobTitleString + ":</b> " + resume.getDesiredJobTitle()+ "<br/>";
         temp += "<b>" + salaryString + ":</b> " + resume.getSalary();
         resumeContent.setText(Html.fromHtml(temp));
 
-        // set resume phone
+        // set formatted resume phone
         temp = "";
         temp += "<b>" + phoneString + ":</b> " + resume.getPhone();
         resumePhone.setText(Html.fromHtml(temp));
 
-        // set resume email
+        // set formatted resume email
         temp = "";
         temp += "<b>" + emailString + ":</b> " + resume.getEmail();
         resumeEmail.setText(Html.fromHtml(temp));

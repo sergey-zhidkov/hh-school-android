@@ -30,10 +30,8 @@ import android.widget.Toast;
 public class CreateResumeFragment extends Fragment implements OnClickListener {
     public static final int DEFAULT_DELTA_START_YEAR = 18;
 
-    private static final String GENDER_MALE = "male";
-    private static final String GENDER_FEMALE = "female";
     private static final int GENDER_MALE_POSITION = 0;
-    private static final int GENDER_FEMALE_POSITION = 0;
+    private static final int GENDER_FEMALE_POSITION = 1;
 
     private Activity activity;
     private View currentView;
@@ -101,19 +99,24 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
     }
 
     private void setGender(String genderString) {
-        if (GENDER_MALE.equalsIgnoreCase(genderString)) {
+        if (Resume.GENDER_MALE.equalsIgnoreCase(genderString)) {
             gender.setSelection(GENDER_MALE_POSITION);
         } else {
             gender.setSelection(GENDER_FEMALE_POSITION);
         }
     }
 
+    /**
+     * Returns gender from spinner depending on selected position ( 0 == male, 1 == female)
+     *
+     * @return String gender
+     */
     private String getGender() {
         int genderIndex = gender.getSelectedItemPosition();
         if (genderIndex == 0) {
-            return GENDER_MALE;
+            return Resume.GENDER_MALE;
         } else {
-            return GENDER_FEMALE;
+            return Resume.GENDER_FEMALE;
         }
     }
 

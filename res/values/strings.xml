@@ -10,6 +10,8 @@
     <string name="years">years</string>
 
     <string name="gender">Sex</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
     <string-array name="gender_array">
         <item>Male</item>
         <item>Female</item>
@@ -19,7 +21,7 @@
     <string name="desired_job_title_hint">Java developer</string>
 
     <string name="salary">Salary</string>
-    <string name="salary_hint">amount per month, rubles.</string>
+    <string name="salary_hint">amount per month, RUB.</string>
 
     <string name="phone">Phone</string>
     <string name="phone_hint">+79xx xxxxxxx</string>

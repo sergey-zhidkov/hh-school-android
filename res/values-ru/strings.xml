@@ -10,6 +10,8 @@
     <string name="years">лет</string>
 
     <string name="gender">Пол</string>
+    <string name="gender_male">Мужской</string>
+    <string name="gender_female">Женский</string>
     <string-array name="gender_array">
         <item>Мужской</item>
         <item>Женский</item>
