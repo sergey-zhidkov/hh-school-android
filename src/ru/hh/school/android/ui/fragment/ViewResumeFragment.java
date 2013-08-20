@@ -76,17 +76,17 @@ public class ViewResumeFragment extends Fragment implements OnClickListener {
         temp += "<b>" + birthdayString + ":</b> " + resume.getFormattedBirthday(activity) + " (" + resume.getAgeYears() + " " + years + ")" + "<br/>";
         temp += "<b>" + genderString + ":</b> " + resume.getGender() + "<br/>";
         temp += "<b>" + desiredJobTitleString + ":</b> " + resume.getDesiredJobTitle()+ "<br/>";
-        temp += "<b>" + salaryString + ":</b> " + resume.getSalary() + "<br/>";
+        temp += "<b>" + salaryString + ":</b> " + resume.getSalary();
         resumeContent.setText(Html.fromHtml(temp));
 
         // set resume phone
         temp = "";
-        temp += "<b>" + phoneString + ":</b> " + resume.getPhone() + "<br/>";
+        temp += "<b>" + phoneString + ":</b> " + resume.getPhone();
         resumePhone.setText(Html.fromHtml(temp));
 
         // set resume email
         temp = "";
-        temp += "<b>" + emailString + ":</b> " + resume.getEmail() + "<br/>";
+        temp += "<b>" + emailString + ":</b> " + resume.getEmail();
         resumeEmail.setText(Html.fromHtml(temp));
     }
 
