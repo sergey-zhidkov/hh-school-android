@@ -1,8 +1,6 @@
 package ru.hh.school.android.ui.fragment;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import ru.hh.school.R;
@@ -11,10 +9,7 @@ import ru.hh.school.android.Resume;
 import ru.hh.school.android.ui.CreateResumeActivity;
 import ru.hh.school.android.ui.ViewResumeActivity;
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -74,20 +69,19 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
         updateSpinner();
     }
 
+    /**
+     * Fill spinner with available resumes from DB.
+     */
     private void updateSpinner() {
-        resumes = getResumesList();
+        resumes = dbHelper.getResumesList();
         int resumesSize = resumes.size();
 
         List<String> spinnerList = new ArrayList<String>();
         String spinnerListItem;
         int nPosition = 0;
-        String jobTitle;
-        String name;
         for (Resume resume : resumes) {
             nPosition++;
-            name = resume.getLastFirstName();
-            jobTitle = resume.getDesiredJobTitle();
-            spinnerListItem = nPosition + ". " + ("".equals(jobTitle) ? name : jobTitle);
+            spinnerListItem = nPosition + ". " + getFormattedTitle(resume);
             spinnerList.add(spinnerListItem);
         }
 
@@ -107,85 +101,23 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
         }
     }
 
-    private List<Resume> getResumesList() {
-        List<Resume> resumes = new ArrayList<Resume>();
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.query("resume", null, null, null, null, null, null);
-
-        Resume resume;
-        int colIndex;
-        if (cursor.moveToFirst()) {
-            do {
-                resume = new Resume();
-
-                colIndex = cursor.getColumnIndex(DBHelper.COL_ROWID);
-                resume.setId(cursor.getInt(colIndex));
-
-                colIndex = cursor.getColumnIndex(DBHelper.COL_NAME);
-                resume.setLastFirstName(cursor.getString(colIndex));
-
-                colIndex = cursor.getColumnIndex(DBHelper.COL_BIRTHDAY);
-                long birthday = cursor.getLong(colIndex);
-                resume.setBirthday(new Date(birthday));
-
-                colIndex = cursor.getColumnIndex(DBHelper.COL_GENDER);
-                resume.setGender(cursor.getString(colIndex));
-
-                colIndex = cursor.getColumnIndex(DBHelper.COL_POSITION);
-                resume.setDesiredJobTitle(cursor.getString(colIndex));
-
-                colIndex = cursor.getColumnIndex(DBHelper.COL_SALARY);
-                resume.setSalary(cursor.getString(colIndex));
-
-                colIndex = cursor.getColumnIndex(DBHelper.COL_PHONE);
-                resume.setPhone(cursor.getString(colIndex));
-
-                colIndex = cursor.getColumnIndex(DBHelper.COL_EMAIL);
-                resume.setEmail(cursor.getString(colIndex));
-
-                resumes.add(resume);
-            } while (cursor.moveToNext());
+    /**
+     * Returns formatted spinner title.
+     *
+     * @param resume
+     * @return String spinner title
+     */
+    private String getFormattedTitle(Resume resume) {
+        String title = "[--  --]";
+        String name = resume.getLastFirstName();
+        String jobTitle = resume.getDesiredJobTitle();
+        if (!"".equals(jobTitle)) {
+            return jobTitle;
         }
-
-        cursor.close();
-        return resumes;
-    }
-
-    private Resume getResumeByRowId(long rowId) {
-        Resume resume = new Resume();
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String select = "select * from " + DBHelper.TABLE_RESUME + " where rowid = ?";
-        Cursor cursor = db.rawQuery(select, new String[] {Long.toString(rowId)});
-
-        int colIndex;
-        if (cursor.moveToFirst()) {
-            resume.setId((int) rowId);
-
-            colIndex = cursor.getColumnIndex(DBHelper.COL_NAME);
-            resume.setLastFirstName(cursor.getString(colIndex));
-
-            colIndex = cursor.getColumnIndex(DBHelper.COL_BIRTHDAY);
-            long birthday = cursor.getLong(colIndex);
-            resume.setBirthday(new Date(birthday));
-
-            colIndex = cursor.getColumnIndex(DBHelper.COL_GENDER);
-            resume.setGender(cursor.getString(colIndex));
-
-            colIndex = cursor.getColumnIndex(DBHelper.COL_POSITION);
-            resume.setDesiredJobTitle(cursor.getString(colIndex));
-
-            colIndex = cursor.getColumnIndex(DBHelper.COL_SALARY);
-            resume.setSalary(cursor.getString(colIndex));
-
-            colIndex = cursor.getColumnIndex(DBHelper.COL_PHONE);
-            resume.setPhone(cursor.getString(colIndex));
-
-            colIndex = cursor.getColumnIndex(DBHelper.COL_EMAIL);
-            resume.setEmail(cursor.getString(colIndex));
+        if (!"".equals(name)) {
+            return name;
         }
-
-        cursor.close();
-        return resume;
+        return title;
     }
 
     private void initButtons() {
@@ -235,28 +167,21 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
         }
     }
 
+    /**
+     * Create new resume, put it into DB and open resumes editor.
+     */
     private void createResume() {
-        ContentValues cv = new ContentValues();
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        cv.put(DBHelper.COL_NAME, "");
-        cv.put(DBHelper.COL_BIRTHDAY, getInitialDate());
-        cv.put(DBHelper.COL_GENDER, "male");
-        cv.put(DBHelper.COL_POSITION, "");
-        cv.put(DBHelper.COL_SALARY, "");
-        cv.put(DBHelper.COL_PHONE, "");
-        cv.put(DBHelper.COL_EMAIL, "");
-
-        long rowId = db.insert(DBHelper.TABLE_RESUME, null, cv);
-        db.close();
-
-        Resume resume = getResumeByRowId(rowId);
+        Resume resume = new Resume();
+        dbHelper.insertResumeIntoDB(resume);
 
         Intent intent = new Intent(activity, CreateResumeActivity.class);
         intent.putExtra(Resume.class.getCanonicalName(), resume);
         startActivity(intent);
     }
 
+    /**
+     * Open resumes editor to edit currently selected resume from spinner.
+     */
     private void editResume() {
         int editPosition = spResumesList.getSelectedItemPosition();
         Resume resumeToEdit = resumes.get(editPosition);
@@ -266,18 +191,21 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
         startActivity(intent);
     }
 
+    /**
+     * Removes currently selected resume from DB and update view.
+     */
     private void removeResume() {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
         int deletedPosition = spResumesList.getSelectedItemPosition();
         int rowId = resumes.get(deletedPosition).getId();
-
-        db.delete(DBHelper.TABLE_RESUME, "rowid=" + rowId, null);
-        db.close();
+        dbHelper.removeResumeByRowId(rowId);
 
         updateSpinner();
         updateButtons();
     }
 
+    /**
+     * Sends resume to HR if it properly filled.
+     */
     private void sendResume() {
         int positionToSend = spResumesList.getSelectedItemPosition();
         Resume resumeToSend = resumes.get(positionToSend);
@@ -292,10 +220,4 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
         }
     }
 
-    private long getInitialDate() {
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR) - CreateResumeFragment.DEFAULT_DELTA_START_YEAR;
-        calendar.set(year, 0, 1);
-        return calendar.getTimeInMillis();
-    }
 }

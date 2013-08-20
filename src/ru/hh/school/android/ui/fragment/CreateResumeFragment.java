@@ -11,9 +11,7 @@ import ru.hh.school.android.ui.ViewResumeActivity;
 import ru.hh.school.android.ui.dialog.DatePickerFragment;
 import android.app.Activity;
 import android.app.DatePickerDialog.OnDateSetListener;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
@@ -28,19 +26,17 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 public class CreateResumeFragment extends Fragment implements OnClickListener {
-    public static final int DEFAULT_DELTA_START_YEAR = 18;
-
     private static final int GENDER_MALE_POSITION = 0;
     private static final int GENDER_FEMALE_POSITION = 1;
 
     private Activity activity;
     private View currentView;
 
+    /** Currently edited resume */
     private Resume resume;
 
     private EditText lastFirstName;
     private Button btnChangeBirthday;
-    private Date currentBirthday;
     private Spinner gender;
     private EditText desiredJobTitle;
     private EditText salary;
@@ -120,21 +116,12 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
         }
     }
 
-    private void setBirthday() {
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR) - DEFAULT_DELTA_START_YEAR;
-        int month = 0; // January
-        int day = 1;
-
-        setBirthday(year, month, day);
-    }
-
+    /**
+     * Sets birthday text on the button.
+     *
+     * @param date
+     */
     private void setBirthday(Date date) {
-        if (date == null) {
-            setBirthday();
-            return;
-        }
-
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int year = calendar.get(Calendar.YEAR);
@@ -144,45 +131,52 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
         setBirthday(year, month, day);
     }
 
+    /**
+     * Sets birthday text on the button.
+     *
+     * @param year
+     * @param month
+     * @param day
+     */
     private void setBirthday(int year, int month, int day) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day);
-        currentBirthday = calendar.getTime();
+        resume.setBirthday(calendar.getTime());
 
         java.text.DateFormat dateFormat = DateFormat.getDateFormat(activity);
-        String dateText = dateFormat.format(currentBirthday);
+        String dateText = dateFormat.format(resume.getBirthday());
         String years = getResources().getString(R.string.years);
-        dateText += " (" + getDiffYears(calendar, Calendar.getInstance()) + " " + years + ")";
+
+        // TODO: fix but with russian age words
+        dateText += " (" + resume.getAgeYears() + " " + years + ")";
 
         btnChangeBirthday.setText(dateText);
     }
 
-    public int getDiffYears(Calendar first, Calendar last) {
-        int diff = last.get(Calendar.YEAR) - first.get(Calendar.YEAR);
-        if (first.get(Calendar.MONTH) > last.get(Calendar.MONTH)) {
-            diff--;
-        }
-        if (first.get(Calendar.MONTH) == last.get(Calendar.MONTH)
-                && first.get(Calendar.DAY_OF_MONTH) > last.get(Calendar.DAY_OF_MONTH)) {
-            diff--;
-        }
-
-        return diff;
-    }
-
+    /**
+     * On click listener to change birthday.
+     *
+     * @param view
+     */
     public void changeBirthday(View view) {
         showDatePickerDialog();
     }
 
+    /**
+     * Shows datePickerDialog.
+     */
     private void showDatePickerDialog() {
         DatePickerFragment dpDialog = new DatePickerFragment();
         Bundle args = new Bundle();
-        args.putLong("birthday", currentBirthday.getTime());
+        args.putLong("birthday", resume.getBirthday().getTime());
         dpDialog.setArguments(args);
         dpDialog.setListener(onChangeBirthdayListener);
         dpDialog.show(getFragmentManager(), "Birthday picker");
     }
 
+    /**
+     * Listener to change birthday.
+     */
     private final OnDateSetListener onChangeBirthdayListener = new OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -193,7 +187,6 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
     @Override
     public void onClick(View v) {
         resume.setLastFirstName(lastFirstName.getText().toString().trim());
-        resume.setBirthday(currentBirthday);
         resume.setGender(getGender());
         resume.setDesiredJobTitle(desiredJobTitle.getText().toString().trim());
         resume.setSalary(salary.getText().toString());
@@ -211,24 +204,17 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
         }
     }
 
+    /**
+     * Saves resume into DB, but don't send it to HR.
+     */
     private void saveResume() {
         int rowId = resume.getId();
-        DBHelper dbHelper = new DBHelper(activity);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        ContentValues cv = new ContentValues();
-        cv.put(DBHelper.COL_NAME, resume.getLastFirstName());
-        cv.put(DBHelper.COL_BIRTHDAY, currentBirthday.getTime());
-        cv.put(DBHelper.COL_GENDER, resume.getGender());
-        cv.put(DBHelper.COL_POSITION, resume.getDesiredJobTitle());
-        cv.put(DBHelper.COL_SALARY, resume.getSalary());
-        cv.put(DBHelper.COL_PHONE, resume.getPhone());
-        cv.put(DBHelper.COL_EMAIL, resume.getEmail());
-
-        db.update(DBHelper.TABLE_RESUME, cv, "rowid=" + rowId, null);
-        db.close();
+        new DBHelper(activity).updateResumeByRowId(rowId, resume);
     }
 
+    /**
+     * Sends resume to HR if it properly filled.
+     */
     private void sendResume() {
         if (resume.isFilledCorrectly()) {
             // send resume

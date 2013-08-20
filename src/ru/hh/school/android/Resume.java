@@ -12,6 +12,8 @@ public class Resume implements Parcelable{
     public static final String GENDER_MALE = "male";
     public static final String GENDER_FEMALE = "female";
 
+    public static final int DEFAULT_DELTA_START_YEAR = 18;
+
     private int id;
     private String lastFirstName;
     private Date birthday;
@@ -23,6 +25,7 @@ public class Resume implements Parcelable{
 
     public Resume() {
         gender = GENDER_MALE;
+        birthday = new Date(getInitialDate());
     }
 
     public boolean isFilledCorrectly() {
@@ -79,6 +82,13 @@ public class Resume implements Parcelable{
         Calendar first = Calendar.getInstance();
         first.setTime(birthday);
         return getDiffYears(first, Calendar.getInstance());
+    }
+
+    private long getInitialDate() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR) - DEFAULT_DELTA_START_YEAR;
+        calendar.set(year, 0, 1);
+        return calendar.getTimeInMillis();
     }
 
     public void setBirthday(Date birthday) {
