@@ -186,13 +186,6 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
 
     @Override
     public void onClick(View v) {
-        resume.setLastFirstName(lastFirstName.getText().toString().trim());
-        resume.setGender(getGender());
-        resume.setDesiredJobTitle(desiredJobTitle.getText().toString().trim());
-        resume.setSalary(salary.getText().toString());
-        resume.setPhone(phone.getText().toString());
-        resume.setEmail(email.getText().toString());
-
         switch (v.getId()) {
         case R.id.btn_send_resume:
             saveResume();
@@ -205,17 +198,38 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
     }
 
     /**
+     * Gets info from the form.
+     */
+    private void fillResume() {
+        resume.setLastFirstName(lastFirstName.getText().toString().trim());
+        resume.setGender(getGender());
+        resume.setDesiredJobTitle(desiredJobTitle.getText().toString().trim());
+        resume.setSalary(salary.getText().toString());
+        resume.setPhone(phone.getText().toString());
+        resume.setEmail(email.getText().toString());
+    }
+
+    /**
      * Saves resume into DB, but don't send it to HR.
      */
     private void saveResume() {
+        fillResume();
         long rowId = resume.getId();
         new DBHelper(activity).updateResumeByRowId(rowId, resume);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // save edited resume in case of this fragment was stopped, destroyed, etc.
+        saveResume();
     }
 
     /**
      * Sends resume to HR if it properly filled.
      */
     private void sendResume() {
+        fillResume();
         if (resume.isFilledCorrectly()) {
             // send resume
             Intent intent = new Intent(activity, ViewResumeActivity.class);
