@@ -17,7 +17,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,14 +28,12 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 public class CreateResumeFragment extends Fragment implements OnClickListener {
-    private static final int DEFAULT_DELTA_START_YEAR = 18;
+    public static final int DEFAULT_DELTA_START_YEAR = 18;
 
     private static final String GENDER_MALE = "male";
     private static final String GENDER_FEMALE = "female";
     private static final int GENDER_MALE_POSITION = 0;
     private static final int GENDER_FEMALE_POSITION = 0;
-
-    private static final String TAG = "HH_SCHOOL";
 
     private Activity activity;
     private View currentView;
@@ -157,7 +154,7 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
         btnChangeBirthday.setText(dateText);
     }
 
-    private int getDiffYears(Calendar first, Calendar last) {
+    public int getDiffYears(Calendar first, Calendar last) {
         int diff = last.get(Calendar.YEAR) - first.get(Calendar.YEAR);
         if (first.get(Calendar.MONTH) > last.get(Calendar.MONTH)) {
             diff--;
@@ -212,14 +209,13 @@ public class CreateResumeFragment extends Fragment implements OnClickListener {
     }
 
     private void saveResume() {
-        Log.d(TAG, resume.toString());
         int rowId = resume.getId();
         DBHelper dbHelper = new DBHelper(activity);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         ContentValues cv = new ContentValues();
         cv.put(DBHelper.COL_NAME, resume.getLastFirstName());
-        cv.put(DBHelper.COL_BIRTHDAY, 0); // TODO: ??
+        cv.put(DBHelper.COL_BIRTHDAY, currentBirthday.getTime());
         cv.put(DBHelper.COL_GENDER, resume.getGender());
         cv.put(DBHelper.COL_POSITION, resume.getDesiredJobTitle());
         cv.put(DBHelper.COL_SALARY, resume.getSalary());

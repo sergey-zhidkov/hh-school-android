@@ -1,5 +1,6 @@
 package ru.hh.school.android;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import android.content.Context;
@@ -58,6 +59,24 @@ public class Resume implements Parcelable{
     public String getFormattedBirthday(Context context) {
         java.text.DateFormat dateFormat = DateFormat.getDateFormat(context);
         return dateFormat.format(birthday);
+    }
+
+    private int getDiffYears(Calendar first, Calendar last) {
+        int diff = last.get(Calendar.YEAR) - first.get(Calendar.YEAR);
+        if (first.get(Calendar.MONTH) > last.get(Calendar.MONTH)) {
+            diff--;
+        }
+        if (first.get(Calendar.MONTH) == last.get(Calendar.MONTH)
+                && first.get(Calendar.DAY_OF_MONTH) > last.get(Calendar.DAY_OF_MONTH)) {
+            diff--;
+        }
+        return diff;
+    }
+
+    public int getAgeYears() {
+        Calendar first = Calendar.getInstance();
+        first.setTime(birthday);
+        return getDiffYears(first, Calendar.getInstance());
     }
 
     public void setBirthday(Date birthday) {

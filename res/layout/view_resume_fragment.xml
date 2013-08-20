@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:textStyle="bold"
         android:text="@string/activity2_title"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -27,6 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autoLink="phone"
+        android:paddingTop="1dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -34,6 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autoLink="email"
+        android:paddingTop="1dp"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <EditText

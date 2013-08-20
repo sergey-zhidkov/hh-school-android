@@ -63,6 +63,7 @@ public class ViewResumeFragment extends Fragment implements OnClickListener {
         Resources res = getResources();
         String lastFirstNameString = res.getString(R.string.last_first_name);
         String birthdayString = res.getString(R.string.birthday);
+        String years = res.getString(R.string.years);
         String genderString = res.getString(R.string.gender);
         String desiredJobTitleString = res.getString(R.string.desired_job_title);
         String salaryString = res.getString(R.string.salary);
@@ -70,23 +71,23 @@ public class ViewResumeFragment extends Fragment implements OnClickListener {
         String emailString = res.getString(R.string.email);
 
         // set resume content
-        StringBuilder sb = new StringBuilder();
-        sb.append("<b>").append(lastFirstNameString).append(":").append("</b> ").append(resume.getLastFirstName()).append("<br/>");
-        sb.append("<b>").append(birthdayString).append(":").append("</b> ").append(resume.getFormattedBirthday(activity)).append("<br/>");
-        sb.append("<b>").append(genderString).append(":").append("</b> ").append(resume.getGender()).append("<br/>");
-        sb.append("<b>").append(desiredJobTitleString).append(":").append("</b> ").append(resume.getDesiredJobTitle()).append("<br/>");
-        sb.append("<b>").append(salaryString).append(":").append("</b> ").append(resume.getSalary()).append("<br/>");
-        resumeContent.setText(Html.fromHtml(sb.toString()));
+        String temp = "";
+        temp += "<b>" + lastFirstNameString + ":</b> " + resume.getLastFirstName() + "<br/>";
+        temp += "<b>" + birthdayString + ":</b> " + resume.getFormattedBirthday(activity) + " (" + resume.getAgeYears() + " " + years + ")" + "<br/>";
+        temp += "<b>" + genderString + ":</b> " + resume.getGender() + "<br/>";
+        temp += "<b>" + desiredJobTitleString + ":</b> " + resume.getDesiredJobTitle()+ "<br/>";
+        temp += "<b>" + salaryString + ":</b> " + resume.getSalary() + "<br/>";
+        resumeContent.setText(Html.fromHtml(temp));
 
         // set resume phone
-        sb = new StringBuilder();
-        sb.append("<b>").append(phoneString).append(":").append("</b> ").append(resume.getPhone()).append("<br/>");
-        resumePhone.setText(Html.fromHtml(sb.toString()));
+        temp = "";
+        temp += "<b>" + phoneString + ":</b> " + resume.getPhone() + "<br/>";
+        resumePhone.setText(Html.fromHtml(temp));
 
         // set resume email
-        sb = new StringBuilder();
-        sb.append("<b>").append(emailString).append(":").append("</b> ").append(resume.getEmail()).append("<br/>");
-        resumeEmail.setText(Html.fromHtml(sb.toString()));
+        temp = "";
+        temp += "<b>" + emailString + ":</b> " + resume.getEmail() + "<br/>";
+        resumeEmail.setText(Html.fromHtml(temp));
     }
 
     @Override

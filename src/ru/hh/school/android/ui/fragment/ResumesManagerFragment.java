@@ -1,6 +1,7 @@
 package ru.hh.school.android.ui.fragment;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,8 +27,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 public class ResumesManagerFragment extends Fragment implements OnClickListener {
-    private static final String TAG = "HH_SCHOOL";
-
     private Activity activity;
     private View currentView;
 
@@ -64,12 +62,9 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
         initButtons();
     }
 
-
-
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, "onResume()");
         updateSpinner();
         updateButtons();
     }
@@ -130,8 +125,8 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
                 resume.setLastFirstName(cursor.getString(colIndex));
 
                 colIndex = cursor.getColumnIndex(DBHelper.COL_BIRTHDAY);
-                String birthdayString = cursor.getString(colIndex);
-                resume.setBirthday(new Date()); //TODO:
+                long birthday = cursor.getLong(colIndex);
+                resume.setBirthday(new Date(birthday));
 
                 colIndex = cursor.getColumnIndex(DBHelper.COL_GENDER);
                 resume.setGender(cursor.getString(colIndex));
@@ -170,8 +165,8 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
             resume.setLastFirstName(cursor.getString(colIndex));
 
             colIndex = cursor.getColumnIndex(DBHelper.COL_BIRTHDAY);
-            String birthdayString = cursor.getString(colIndex);
-            resume.setBirthday(new Date()); //TODO:
+            long birthday = cursor.getLong(colIndex);
+            resume.setBirthday(new Date(birthday));
 
             colIndex = cursor.getColumnIndex(DBHelper.COL_GENDER);
             resume.setGender(cursor.getString(colIndex));
@@ -245,14 +240,13 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         cv.put(DBHelper.COL_NAME, "");
-        cv.put(DBHelper.COL_BIRTHDAY, ""); // TODO: ??
+        cv.put(DBHelper.COL_BIRTHDAY, getInitialDate());
         cv.put(DBHelper.COL_GENDER, "male");
         cv.put(DBHelper.COL_POSITION, "");
         cv.put(DBHelper.COL_SALARY, "");
         cv.put(DBHelper.COL_PHONE, "");
         cv.put(DBHelper.COL_EMAIL, "");
 
-        // TODO: check for error -1
         long rowId = db.insert(DBHelper.TABLE_RESUME, null, cv);
         db.close();
 
@@ -296,5 +290,12 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
         } else {
             Toast.makeText(activity, R.string.fill_name_and_position_message, Toast.LENGTH_LONG).show();
         }
+    }
+
+    private long getInitialDate() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR) - CreateResumeFragment.DEFAULT_DELTA_START_YEAR;
+        calendar.set(year, 0, 1);
+        return calendar.getTimeInMillis();
     }
 }

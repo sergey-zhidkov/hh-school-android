@@ -27,7 +27,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL("create table " + TABLE_RESUME + " ("
                 + COL_ROWID + " integer primary key autoincrement,"
                 + COL_NAME + " text not null,"
-                + COL_BIRTHDAY + " text not null,"
+                + COL_BIRTHDAY + " integer not null,"
                 + COL_GENDER + " text not null,"
                 + COL_POSITION + " text not null,"
                 + COL_SALARY + " text not null,"

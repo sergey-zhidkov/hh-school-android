@@ -3,46 +3,46 @@
     <!-- CreateResumeActivity -->
     <string name="app_name">HH school android</string>
 
-    <string name="last_first_name">ФИО</string>
-    <string name="last_first_name_hint">Иванов Пётр Петрович</string>
+    <string name="last_first_name">Last and First Name</string>
+    <string name="last_first_name_hint">Smith John</string>
 
-    <string name="birthday">Дата рождения</string>
-    <string name="years">лет</string>
+    <string name="birthday">Birthday</string>
+    <string name="years">years</string>
 
-    <string name="gender">Пол</string>
+    <string name="gender">Sex</string>
     <string-array name="gender_array">
-        <item>Мужской</item>
-        <item>Женский</item>
+        <item>Male</item>
+        <item>Female</item>
     </string-array>
 
-    <string name="desired_job_title">Желаемая должность</string>
-    <string name="desired_job_title_hint">Java разработчик</string>
+    <string name="desired_job_title">Desired Job Title</string>
+    <string name="desired_job_title_hint">Java developer</string>
 
-    <string name="salary">Зарплата</string>
-    <string name="salary_hint">сумма в месяц, руб.</string>
+    <string name="salary">Salary</string>
+    <string name="salary_hint">amount per month, rubles.</string>
 
-    <string name="phone">Телефон</string>
+    <string name="phone">Phone</string>
     <string name="phone_hint">+79xx xxxxxxx</string>
 
-    <string name="email">Эл. почта</string>
+    <string name="email">Email</string>
     <string name="email_hint">yourmail@example.com</string>
 
-    <string name="send_resume">Отправить резюме</string>
-    <string name="save_resume">Сохранить резюме</string>
+    <string name="send_resume">Send Resume</string>
+    <string name="save_resume">Save Resume</string>
 
-    <string name="fill_name_and_position_message">Перед отправкой резюме необходимо заполнить поля ФИО и Желаемая должность</string>
+    <string name="fill_name_and_position_message">You should fill name and desired position before sending resume</string>
 
     <!-- ViewResumeActivity -->
-    <string name="activity2_title">Резюме соискателя</string>
-    <string name="answer_hint">ответ соискателю</string>
-    <string name="send_answer">Ответить</string>
+    <string name="activity2_title">Jobseekers CV</string>
+    <string name="answer_hint">answer...</string>
+    <string name="send_answer">Answer</string>
 
-    <string name="on_send_answer_message">Сообщение соискателю отправлено</string>
+    <string name="on_send_answer_message">The message was sent</string>
 
     <!-- ResumesManagerActivity -->
-    <string name="resumes_list_is_empty">--Резюме отсутствуют--</string>
-    <string name="resumes_list">Список резюме</string>
-    <string name="create_resume">Создать резюме</string>
-    <string name="edit_resume">Редактировать резюме</string>
-    <string name="remove_resume">Удалить резюме</string>
+    <string name="resumes_list_is_empty">--No resumes--</string>
+    <string name="resumes_list">List of resumes</string>
+    <string name="create_resume">Create Resume</string>
+    <string name="edit_resume">Edit Resume</string>
+    <string name="remove_resume">Remove Resume</string>
 </resources>
