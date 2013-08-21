@@ -3,6 +3,8 @@ package ru.hh.school.android.ui.fragment;
 import ru.hh.school.R;
 import ru.hh.school.android.Resume;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,12 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class ViewResumeFragment extends Fragment implements OnClickListener {
+
+    public static final String HR_MESSAGE = "hrmessage";
 
     private Activity activity;
     private View currentView;
@@ -104,7 +108,14 @@ public class ViewResumeFragment extends Fragment implements OnClickListener {
     public void onClick(View v) {
         String message = answer.getText().toString();
         message = message.trim();
-        // TODO: send message to...
-        Toast.makeText(activity, R.string.on_send_answer_message, Toast.LENGTH_LONG).show();
+
+        // hide soft keyboard before send answer message
+        InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(answer.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+
+        Intent intent = new Intent();
+        intent.putExtra(HR_MESSAGE, message);
+        activity.setResult(Activity.RESULT_OK, intent);
+        activity.finish();
     }
 }

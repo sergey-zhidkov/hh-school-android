@@ -40,6 +40,7 @@
     <string name="send_answer">Ответить</string>
 
     <string name="on_send_answer_message">Сообщение соискателю отправлено</string>
+    <string name="answer_message_title">Ответ работодателя</string>
 
     <!-- ResumesManagerActivity -->
     <string name="resumes_list_is_empty">--Резюме отсутствуют--</string>

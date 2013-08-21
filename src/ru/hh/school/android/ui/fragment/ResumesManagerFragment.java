@@ -9,6 +9,8 @@ import ru.hh.school.android.Resume;
 import ru.hh.school.android.ui.CreateResumeActivity;
 import ru.hh.school.android.ui.ViewResumeActivity;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +24,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 public class ResumesManagerFragment extends Fragment implements OnClickListener {
+    private static final int REQUEST_CODE = 1;
+
     private Activity activity;
     private View currentView;
 
@@ -215,10 +219,28 @@ public class ResumesManagerFragment extends Fragment implements OnClickListener 
             // send resume
             Intent intent = new Intent(activity, ViewResumeActivity.class);
             intent.putExtra(Resume.class.getCanonicalName(), resumeToSend);
-            startActivity(intent);
+            startActivityForResult(intent, REQUEST_CODE);
         } else {
             Toast.makeText(activity, R.string.fill_name_and_position_message, Toast.LENGTH_LONG).show();
         }
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String message = data.getStringExtra(ViewResumeFragment.HR_MESSAGE);
+
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(activity);
+        dialogBuilder.setTitle(R.string.answer_message_title);
+        dialogBuilder.setMessage(message);
+        dialogBuilder.setCancelable(false);
+        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        AlertDialog messagebox = dialogBuilder.create();
+        messagebox.show();
+    }
 }
